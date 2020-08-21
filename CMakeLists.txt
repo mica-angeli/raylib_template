@@ -7,6 +7,22 @@ endif()
 
 project(raylib_template C)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 
-add_executable(raylib_template main.c)
+add_subdirectory(libs/raylib)
+
+add_executable(${PROJECT_NAME} src/main.c)
+target_link_libraries(${PROJECT_NAME} raylib)
+
+if(APPLE)
+    # Create app bundle
+    set(MACOSX_BUNDLE_NAME "raylib_template")
+    set(MACOSX_BUNDLE_PACKAGE_NAME "rangeli.raylib_template")
+
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        OUTPUT_NAME ${MACOSX_BUNDLE_NAME}
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in)
+endif()
+
+
